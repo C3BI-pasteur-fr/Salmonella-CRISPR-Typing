@@ -10,10 +10,10 @@ setup(name="salmonella_crispr",
         author_email='kehillio@pasteur.fr and hmenager@pasteur.fr',
         license='',
         keywords = ['salmonella','crispr','fasta'],
-        install_requires=[],
+        install_requires=['biopython'],
         packages=["salmonella_crispr"],
         package_data={
-        'tooldog': ['salmonella_crispr/data/*'],
+        'salmonella_crispr': ['data/spacers_Salmonella.fa'],
         },
         entry_points={'console_scripts':['crispr=salmonella_crispr.main:run']},
         classifiers=[
