@@ -34,7 +34,8 @@ def parse_arguments():
     parser.add_argument('-s', '--spacers', type=argparse.FileType('r', encoding='UTF-8'),
                         help='database of spacers (FASTA).',
                         default=LOCAL_DATA + "/spacers_Salmonella.fa")
-    parser.add_argument('-o', '--outfile_name', help='name of output file',
+    parser.add_argument('-o', '--outfile', help='name of output file',
+                        type=argparse.FileType('w', encoding='UTF-8'),
                         default='salmonella-crispr.output')
 
     try:
@@ -60,6 +61,15 @@ def find_spacers(query, spacers):
     return res_query
     
 
+def write_fasta(sequence, file_handle):
+    """
+    :param sequence: sequence to write in the file
+    :type sequence: :class:`Bio.SeqRecord.SeqRecord` object
+    :param file_handle: output file handler
+    :type file_handle: 
+    """
+    SeqIO.write(sequence, file_handle, "fasta")
+
 
 def run():
     """
@@ -72,14 +82,10 @@ def run():
     query_seqs = list(SeqIO.parse(args.query, "fasta"))
     # Parse content of spacers database
     spacers = list(SeqIO.parse(args.spacers, "fasta"))
+    res_query = []
     for query in query_seqs:
-        res_query = find_spacers(query, spacers)
-        if os.path.isfile(args.outfile_name):
-            with open(args.outfile_name, "a") as output_handle:
-                SeqIO.write(res_query, output_handle, "fasta")
-        else:
-            with open(args.outfile_name, "w") as output_handle:
-                SeqIO.write(res_query, output_handle, "fasta")
+        res_query.append(find_spacers(query, spacers))
+    write_fasta(res_query, args.outfile)
 
 
 if __name__ == "__main__":
