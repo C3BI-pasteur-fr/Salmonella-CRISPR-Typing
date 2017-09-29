@@ -24,7 +24,7 @@ LOCAL_DATA = os.path.dirname(__file__) + "/data"
 # Function(s) -----
 
 
-def parse_arguments():
+def parse_arguments(args):
     """
     Define parser for salmonella_crispr tool.
     """
@@ -39,7 +39,7 @@ def parse_arguments():
                         default='salmonella-crispr.output')
 
     try:
-        return parser.parse_args()
+        return parser.parse_args(args)
     except SystemExit:
         sys.exit()
 
@@ -76,7 +76,7 @@ def run():
     Running function called by crispr command line
     """
     # Parse arguments
-    args = parse_arguments()
+    args = parse_arguments(sys.argv[1:])
 
     # Parse query sequence(s)
     query_seqs = list(SeqIO.parse(args.query, "fasta"))
