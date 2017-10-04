@@ -24,6 +24,8 @@ def _remove_start(seq, pos):
     :return: truncated sequence
     :rtype: STRING
     """
+    if pos < NUC_LEFT:
+        return seq
     cut_pos = pos - NUC_LEFT
     replacement_text = "[{0}bp]..".format(cut_pos)
     return(replacement_text + seq[cut_pos:])
@@ -42,10 +44,12 @@ def _remove_end(seq, pos):
     :return: truncated sequence
     :rtype: STRING
     """
+    if len(seq) - pos < NUC_LEFT:
+        return seq
     cut_pos = pos + NUC_LEFT
     length_removed = len(seq) - (cut_pos + 1)
     replacement_text = "...[{0}bp]".format(length_removed)
-    return(seq[:-length_removed] + replacement_text)
+    return seq[:-length_removed] + replacement_text
 
 
 def _is_last_from_crispr_loci(seq, pos):
@@ -77,24 +81,25 @@ def _remove_between(sequence):
     :rtype: STRING
     """
     seq = sequence
-    exit_loop = False
     last_pos = -1  # to store the last treated position of LAST_CHAR found
-    while not exit_loop:
+    while True:
         # Find the next LAST_CHAR
-        last_pos = seq[last_pos + 1:].find('&') + last_pos + 1
+        new_last = seq[last_pos + 1:].find('&')
+        if (new_last == -1):
+            break
+        else:
+            last_pos = new_last + last_pos + 1
         if _is_last_from_crispr_loci(seq, last_pos):
             # Look for the next CRISPR loci
             next_first = seq[last_pos + 1:].find('-')
             if (next_first == -1):  # No START_CHAR has been found
-                exit_loop = True
+                break
             else:
                 next_first += last_pos  # Reposition
                 seq = "{0}..[{1}bp]..{2}".format(seq[:last_pos + NUC_LEFT + 1],
                                                   next_first - NUC_LEFT - (last_pos + NUC_LEFT),
                                                   seq[next_first - NUC_LEFT + 1:])
     return seq
-
-
 
 
 def _truncate_sequence(sequence):
@@ -106,9 +111,13 @@ def _truncate_sequence(sequence):
     """
     seq = str(sequence.seq)
     # Replace genomic regions by their length
+    print(seq)
     seq = _remove_start(seq, seq.find(START_CHAR))
+    print(seq)
     seq = _remove_end(seq, seq.rfind(END_CHAR))
+    print(seq)
     seq = _remove_between(seq)
+    print(seq)
     # Return sequence in an object format
     return SeqRecord(Seq(seq), id=sequence.id, description=sequence.description)
     
