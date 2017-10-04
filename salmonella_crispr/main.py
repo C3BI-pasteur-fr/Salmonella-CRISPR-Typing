@@ -16,10 +16,9 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
+from salmonella_crispr.truncate_sequences import truncate_sequences
+from salmonella_crispr.settings import START_CHAR, END_CHAR, LOCAL_DATA
 
-# Global(s) -----
-
-LOCAL_DATA = os.path.dirname(__file__) + "/data"
 
 # Function(s) -----
 
@@ -37,6 +36,8 @@ def parse_arguments(args):
     parser.add_argument('-o', '--outfile', help='name of output file',
                         type=argparse.FileType('w', encoding='UTF-8'),
                         default='salmonella-crispr.output')
+    parser.add_argument('-t', '--truncate', help='truncate sequences with no spacers',
+                        action='store_true')
 
     try:
         return parser.parse_args(args)
@@ -56,10 +57,10 @@ def find_spacers(query, spacers):
     # Copy sequence of the query for modification
     seq_query = str(query.seq.lower())
     for spacer in spacers:
-        seq_query = seq_query.replace(str(spacer.seq.lower()), '-' + spacer.name)
+        seq_query = seq_query.replace(str(spacer.seq.lower()), START_CHAR + spacer.name + END_CHAR)
     res_query = SeqRecord(Seq(seq_query), id=query.id, description=query.description)
     return res_query
-    
+   
 
 def write_fasta(sequence, file_handle):
     """
@@ -85,6 +86,9 @@ def run():
     res_query = []
     for query in query_seqs:
         res_query.append(find_spacers(query, spacers))
+    # User specify to truncate sequences with no spacers
+    if args.truncate:
+        res_query = truncate_sequences(res_query)
     write_fasta(res_query, args.outfile)
 
 
