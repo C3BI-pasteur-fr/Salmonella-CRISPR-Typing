@@ -111,13 +111,9 @@ def _truncate_sequence(sequence):
     """
     seq = str(sequence.seq)
     # Replace genomic regions by their length
-    print(seq)
     seq = _remove_start(seq, seq.find(START_CHAR))
-    print(seq)
     seq = _remove_end(seq, seq.rfind(END_CHAR))
-    print(seq)
     seq = _remove_between(seq)
-    print(seq)
     # Return sequence in an object format
     return SeqRecord(Seq(seq), id=sequence.id, description=sequence.description)
     
