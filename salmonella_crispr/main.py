@@ -15,6 +15,7 @@ import os
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from Bio.SeqIO.FastaIO import FastaWriter
 
 from salmonella_crispr.truncate_sequences import truncate_sequences
 from salmonella_crispr.settings import START_CHAR, END_CHAR, LOCAL_DATA
@@ -37,6 +38,8 @@ def parse_arguments(args):
                         type=argparse.FileType('w', encoding='UTF-8'),
                         default='salmonella-crispr.output')
     parser.add_argument('-t', '--truncate', help='truncate sequences with no spacers',
+                        action='store_true')
+    parser.add_argument('--one_line_fasta', help='write output FASTA in one line',
                         action='store_true')
 
     try:
@@ -62,14 +65,15 @@ def find_spacers(query, spacers):
     return res_query
    
 
-def write_fasta(sequence, file_handle):
+def write_fasta(sequence, file_handle, wrap=60):
     """
     :param sequence: sequence to write in the file
     :type sequence: :class:`Bio.SeqRecord.SeqRecord` object
     :param file_handle: output file handler
     :type file_handle: 
     """
-    SeqIO.write(sequence, file_handle, "fasta")
+    writer = FastaWriter(file_handle, wrap=wrap)
+    writer.write_file(sequence)
 
 
 def run():
@@ -89,7 +93,11 @@ def run():
     # User specify to truncate sequences with no spacers
     if args.truncate:
         res_query = truncate_sequences(res_query)
-    write_fasta(res_query, args.outfile)
+    # Write output files
+    if args.one_line_fasta:
+        write_fasta(res_query, args.outfile, wrap=0)
+    else:
+        write_fasta(res_query, args.outfile)
 
 
 if __name__ == "__main__":
