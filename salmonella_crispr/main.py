@@ -11,6 +11,7 @@ Search spacers composition for a query
 import argparse
 import sys
 import os
+import re
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -18,7 +19,7 @@ from Bio.SeqRecord import SeqRecord
 from Bio.SeqIO.FastaIO import FastaWriter
 
 from salmonella_crispr.truncate_sequences import truncate_sequences
-from salmonella_crispr.settings import START_CHAR, END_CHAR, LOCAL_DATA
+from salmonella_crispr.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC
 
 
 # Function(s) -----
@@ -43,11 +44,30 @@ def parse_arguments(args):
                         action='store_true')
     parser.add_argument('--clean_sequences', help='remove ' + END_CHAR + ' from sequences',
                         action='store_true')
+    parser.add_argument('--list_spacers', help='list all spacers found', action='store_true')
 
     try:
         return parser.parse_args(args)
     except SystemExit:
         sys.exit()
+
+
+def list_spacers(querys, spacers):
+    """
+    :param query: sequence where to look spacers for
+    :type query: :class:`Bio.SeqRecord.SeqRecord` object.
+    :param spacers: list of spacers
+    :type spacers: LIST of :class:`Bio.SeqRecord.SeqRecord` object.
+    :return: report to be written in a file
+    :rtype: STRING
+    """
+    found_spacers = ""
+    for query in querys:
+        for spacer in spacers:
+            for pos in re.finditer(str(spacer.seq.lower()), str(query.seq.lower())):
+                found_spacers += "{0}\t{1}\t{2}\t{3}\n".format(query.name, pos.span()[0],
+                                                               pos.span()[1], spacer.name)
+    return found_spacers
 
 
 def find_spacers(query, spacers):
@@ -105,6 +125,10 @@ def run():
     query_seqs = list(SeqIO.parse(args.query, "fasta"))
     # Parse content of spacers database
     spacers = list(SeqIO.parse(args.spacers, "fasta"))
+    # First make found spacers list if asked
+    if args.list_spacers:
+        with open(FOUND_SPAC, "w") as file_handle:
+            file_handle.write(list_spacers(query_seqs, spacers))
     res_query = []
     for query in query_seqs:
         res_query.append(find_spacers(query, spacers))

@@ -15,3 +15,5 @@ NUC_LEFT = 10
 START_CHAR = "-"
 # Characeter for end of SPACER
 END_CHAR = "&"
+# Name for spacers found with positions
+FOUND_SPAC = "found_spacers.bed"
