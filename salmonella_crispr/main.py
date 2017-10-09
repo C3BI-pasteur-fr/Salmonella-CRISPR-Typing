@@ -41,6 +41,8 @@ def parse_arguments(args):
                         action='store_true')
     parser.add_argument('--one_line_fasta', help='write output FASTA in one line',
                         action='store_true')
+    parser.add_argument('--clean_sequences', help='remove ' + END_CHAR + ' from sequences',
+                        action='store_true')
 
     try:
         return parser.parse_args(args)
@@ -63,6 +65,22 @@ def find_spacers(query, spacers):
         seq_query = seq_query.replace(str(spacer.seq.lower()), START_CHAR + spacer.name + END_CHAR)
     res_query = SeqRecord(Seq(seq_query), id=query.id, description=query.description)
     return res_query
+
+
+def clean_sequences(sequences):
+    """
+    This function is called if users specify it needs sequences to cleaned up..
+
+    :param sequences: sequences with found spacers
+    :type sequences: LIST of :class:`Bio.SeqRecord.SeqRecord` object.
+    :return: truncated sequences
+    :rtype: LIST of :class:`Bio.SeqRecord.SeqRecord` object.
+    """
+    cleaned_seq = []
+    for seq in sequences:
+        cleaned_seq.append(SeqRecord(Seq(str(seq.seq).replace('&','')), id=seq.id,
+                                     description=seq.description))
+    return cleaned_seq
    
 
 def write_fasta(sequence, file_handle, wrap=60):
@@ -93,6 +111,9 @@ def run():
     # User specify to truncate sequences with no spacers
     if args.truncate:
         res_query = truncate_sequences(res_query)
+    # Clean up sequences to remove extra characters (END_CHAR) added
+    if args.clean_sequences:
+        res_query = clean_sequences(res_query)
     # Write output files
     if args.one_line_fasta:
         write_fasta(res_query, args.outfile, wrap=0)
