@@ -128,7 +128,11 @@ def run():
     spacers = list(SeqIO.parse(args.spacers, "fasta"))
     # First make found spacers list if asked
     if args.list_spacers:
-        with open(FOUND_SPAC, "w") as file_handle:
+        if args.outfile is not sys.stdout:
+            spacer_file = os.path.splitext(args.outfile.name)[0] + ".bed"
+        else:
+            spacer_file = FOUND_SPAC
+        with open(spacer_file, "w") as file_handle:
             file_handle.write(list_spacers(query_seqs, spacers))
     res_query = []
     for query in query_seqs:
