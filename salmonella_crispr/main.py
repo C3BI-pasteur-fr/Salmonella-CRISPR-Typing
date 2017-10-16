@@ -37,7 +37,7 @@ def parse_arguments(args):
                         default=LOCAL_DATA + "/spacers_Salmonella.fa")
     parser.add_argument('-o', '--outfile', help='name of output file',
                         type=argparse.FileType('w', encoding='UTF-8'),
-                        default='salmonella-crispr.output')
+                        default=sys.stdout)
     parser.add_argument('-t', '--truncate', help='truncate sequences with no spacers',
                         action='store_true')
     parser.add_argument('--one_line_fasta', help='write output FASTA in one line',
@@ -114,6 +114,7 @@ def write_fasta(sequence, file_handle, wrap=60):
     writer.write_file(sequence)
 
 
+
 def run():
     """
     Running function called by crispr command line
@@ -140,9 +141,9 @@ def run():
         res_query = clean_sequences(res_query)
     # Write output files
     if args.one_line_fasta:
-        write_fasta(res_query, args.outfile, wrap=0)
+        write_fasta(res_query, file_handle=args.outfile, wrap=0)
     else:
-        write_fasta(res_query, args.outfile)
+        write_fasta(res_query, file_handle=args.outfile)
 
 
 if __name__ == "__main__":
