@@ -5,10 +5,14 @@ Methods to truncate sequence to extract only information about regions
 containing spacers.
 """
 
+import logging
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from salmonella_crispr.settings import START_CHAR, END_CHAR, NUC_LEFT, SPACER_MAX
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _remove_start(seq, pos):
@@ -25,7 +29,9 @@ def _remove_start(seq, pos):
     :rtype: STRING
     """
     if pos < NUC_LEFT:
+        _LOGGER.debug("Nothing to remove at the beginning.")
         return seq
+    _LOGGER.debug("Removing nucleotides at the beginning of the sequence.")
     cut_pos = pos - NUC_LEFT
     replacement_text = "[{0}bp]..".format(cut_pos)
     return(replacement_text + seq[cut_pos:])
@@ -45,7 +51,9 @@ def _remove_end(seq, pos):
     :rtype: STRING
     """
     if len(seq) - pos < NUC_LEFT:
+        _LOGGER.debug("Nothing to remove at the end.")
         return seq
+    _LOGGER.debug("Removing nucleotides at the end of the sequence.")
     cut_pos = pos + NUC_LEFT
     length_removed = len(seq) - (cut_pos + 1)
     replacement_text = "...[{0}bp]".format(length_removed)
@@ -80,6 +88,7 @@ def _remove_between(sequence):
     :return: truncated sequence
     :rtype: STRING
     """
+    _LOGGER.debug("Removing nucleotides between spacers.")
     seq = sequence
     last_pos = -1  # to store the last treated position of LAST_CHAR found
     while True:
@@ -109,6 +118,7 @@ def _truncate_sequence(sequence):
     :param sequence: sequence to be truncated
     :type sequence: :class:`Bio.SeqRecord.SeqRecord` object
     """
+    _LOGGER.debug("Truncating " + sequence.id + " sequence.")
     seq = str(sequence.seq)
     # Replace genomic regions by their length
     seq = _remove_start(seq, seq.find(START_CHAR))
@@ -129,6 +139,7 @@ def truncate_sequences(sequences):
     :return: truncated sequences
     :rtype: LIST of :class:`Bio.SeqRecord.SeqRecord` object.
     """
+    _LOGGER.info("Truncating all sequences.")
     trunc_sequences = []
     for sequence in sequences:
         if (sequence.seq.find('-') != -1):  # It means there is at least one spacer

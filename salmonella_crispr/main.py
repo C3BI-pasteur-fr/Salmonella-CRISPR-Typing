@@ -12,6 +12,7 @@ import argparse
 import sys
 import os
 import re
+import logging
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -22,7 +23,22 @@ from salmonella_crispr.truncate_sequences import truncate_sequences
 from salmonella_crispr.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC
 
 
+# Logger -----
+
+_LOGGER = logging.getLogger()
+
 # Function(s) -----
+
+
+def logger_level(args):
+    """
+    Define level of logger.
+    """
+    if args.debug:
+        return logging.DEBUG
+    elif args.verbose:
+        return logging.INFO
+    return logging.WARNING
 
 
 def parse_arguments(args):
@@ -45,6 +61,9 @@ def parse_arguments(args):
     parser.add_argument('--clean_sequences', help='remove ' + END_CHAR + ' from sequences',
                         action='store_true')
     parser.add_argument('--list_spacers', help='list all spacers found', action='store_true')
+    parser.add_argument('-v', '--verbose', help='verbose mode', action='store_true')
+    parser.add_argument('--debug', help='write debug messages', action='store_true')
+
 
     try:
         return parser.parse_args(args)
@@ -61,6 +80,7 @@ def list_spacers(querys, spacers):
     :return: report to be written in a file
     :rtype: STRING
     """
+    _LOGGER.info("Listing found spacers.")
     found_spacers = ""
     for query in querys:
         for spacer in spacers:
@@ -79,6 +99,7 @@ def find_spacers(query, spacers):
     :return: query sequence with spacer sequence replaced by their names
     :rtype: :class:`Bio.SeqRecord.SeqRecord` object.
     """
+    _LOGGER.info("Looking for spacers in " + query.name + ".")
     # Copy sequence of the query for modification
     seq_query = str(query.seq.lower())
     for spacer in spacers:
@@ -96,9 +117,10 @@ def clean_sequences(sequences):
     :return: truncated sequences
     :rtype: LIST of :class:`Bio.SeqRecord.SeqRecord` object.
     """
+    _LOGGER.info("Removing " + END_CHAR + " from sequences.")
     cleaned_seq = []
     for seq in sequences:
-        cleaned_seq.append(SeqRecord(Seq(str(seq.seq).replace('&','')), id=seq.id,
+        cleaned_seq.append(SeqRecord(Seq(str(seq.seq).replace('&', '')), id=seq.id,
                                      description=seq.description))
     return cleaned_seq
    
@@ -110,9 +132,9 @@ def write_fasta(sequence, file_handle, wrap=60):
     :param file_handle: output file handler
     :type file_handle: 
     """
+    _LOGGER.info("Writing output to " + file_handle.name + "...")
     writer = FastaWriter(file_handle, wrap=wrap)
     writer.write_file(sequence)
-
 
 
 def run():
@@ -121,6 +143,9 @@ def run():
     """
     # Parse arguments
     args = parse_arguments(sys.argv[1:])
+
+    # Configure logger
+    logging.basicConfig(level=logger_level(args))
 
     # Parse query sequence(s)
     query_seqs = list(SeqIO.parse(args.query, "fasta"))
