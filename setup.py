@@ -5,7 +5,7 @@ exec(open('salmonella_crispr/version.py').read())
 
 setup(name="salmonella_crispr",
         version=__version__,
-        description='',
+        description='This tool gets a CRISPR profile by identifying the presence of known spacers and direct repeats (DRs) in a given sequence based on a catalogue. This tool is a reimplemntation of a former Perl tool in developed by G. Guigon',
         author='Kenzo-Hugo Hillion and Laetitia Fabre',
         author_email='kehillio@pasteur.fr and laetitia.fabre@pasteur.fr',
         license='',
