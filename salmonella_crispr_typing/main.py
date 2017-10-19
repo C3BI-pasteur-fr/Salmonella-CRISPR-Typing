@@ -20,7 +20,8 @@ from Bio.SeqRecord import SeqRecord
 from Bio.SeqIO.FastaIO import FastaWriter
 
 from salmonella_crispr_typing.truncate_sequences import truncate_sequences
-from salmonella_crispr_typing.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC
+from salmonella_crispr_typing.extract_new import extract_new_spacers
+from salmonella_crispr_typing.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC, NEW_SPAC
 
 
 # Logger -----
@@ -61,6 +62,8 @@ def parse_arguments(args):
     parser.add_argument('--clean_sequences', help='remove ' + END_CHAR + ' from sequences',
                         action='store_true')
     parser.add_argument('--list_spacers', help='list all spacers found', action='store_true')
+    parser.add_argument('--extract_new_spacers', help='extract new found spacer sequences',
+                        action='store_true')
     parser.add_argument('-v', '--verbose', help='verbose mode', action='store_true')
     parser.add_argument('--debug', help='write debug messages', action='store_true')
 
@@ -162,9 +165,15 @@ def run():
     res_query = []
     for query in query_seqs:
         res_query.append(find_spacers(query, spacers))
-    # User specify to truncate sequences with no spacers
+    # User specified to truncate sequences with no spacers
     if args.truncate:
         res_query = truncate_sequences(res_query)
+    # User specified to extract sequences from new found spacers
+    if args.extract_new_spacers:
+        new_seqs = extract_new_spacers(res_query)
+        if new_seqs:
+            with open(NEW_SPAC, "w") as handle:
+                write_fasta(new_seqs, file_handle=handle, wrap=0)
     # Clean up sequences to remove extra characters (END_CHAR) added
     if args.clean_sequences:
         res_query = clean_sequences(res_query)

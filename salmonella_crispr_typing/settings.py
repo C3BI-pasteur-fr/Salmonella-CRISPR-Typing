@@ -17,3 +17,5 @@ START_CHAR = "-"
 END_CHAR = "&"
 # Name for spacers found with positions
 FOUND_SPAC = "found_spacers.bed"
+# Name for new spacer sequences FASTA file
+NEW_SPAC = "new_spacers.fa"

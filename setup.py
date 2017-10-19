@@ -13,7 +13,7 @@ setup(name="salmonella_crispr_typing",
         install_requires=['biopython'],
         packages=["salmonella_crispr_typing"],
         package_data={
-        'salmonella_crispr': ['data/spacers_Salmonella.fa'],
+        'salmonella_crispr_typing': ['data/spacers_Salmonella.fa'],
         },
         entry_points={'console_scripts':['crispr_typing=salmonella_crispr_typing.main:run']},
         classifiers=[
