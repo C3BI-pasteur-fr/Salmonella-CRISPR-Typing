@@ -15,7 +15,7 @@ setup(name="salmonella_crispr_typing",
         package_data={
         'salmonella_crispr': ['data/spacers_Salmonella.fa'],
         },
-        entry_points={'console_scripts':['crispr_typing=salmonella_crispr.main:run']},
+        entry_points={'console_scripts':['crispr_typing=salmonella_crispr_typing.main:run']},
         classifiers=[
             'Development Status :: 4 - Beta',
             'Topic :: Scientific/Engineering :: Bio-Informatics',

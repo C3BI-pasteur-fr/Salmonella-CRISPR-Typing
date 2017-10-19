@@ -12,8 +12,8 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-from salmonella_crispr import main
-from salmonella_crispr.settings import LOCAL_DATA
+from salmonella_crispr_typing import main
+from salmonella_crispr_typing.settings import LOCAL_DATA
 
 
 class TestMain(unittest.TestCase):

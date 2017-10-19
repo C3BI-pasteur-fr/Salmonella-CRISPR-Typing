@@ -19,8 +19,8 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.SeqIO.FastaIO import FastaWriter
 
-from salmonella_crispr.truncate_sequences import truncate_sequences
-from salmonella_crispr.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC
+from salmonella_crispr_typing.truncate_sequences import truncate_sequences
+from salmonella_crispr_typing.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC
 
 
 # Logger -----

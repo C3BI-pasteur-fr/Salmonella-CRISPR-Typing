@@ -10,7 +10,7 @@ import logging
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-from salmonella_crispr.settings import START_CHAR, END_CHAR, NUC_LEFT, SPACER_MAX
+from salmonella_crispr_typing.settings import START_CHAR, END_CHAR, NUC_LEFT, SPACER_MAX
 
 _LOGGER = logging.getLogger(__name__)
 
