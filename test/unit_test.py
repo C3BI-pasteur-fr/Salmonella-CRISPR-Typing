@@ -13,10 +13,15 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from salmonella_crispr_typing import main
+from salmonella_crispr_typing.truncate_sequences import truncate_sequences
+from salmonella_crispr_typing.extract_new import extract_new_spacers, _extract_sequences
 from salmonella_crispr_typing.settings import LOCAL_DATA
 
 
 class TestMain(unittest.TestCase):
+    """
+    Tests for main.py module
+    """
 
     def setUp(self):
         """
@@ -85,6 +90,12 @@ class TestMain(unittest.TestCase):
         finally:
             os.remove(tmp_file)
 
+
+class TestTruncateSequences(unittest.TestCase):
+    """
+    Tests for truncate_sequences.py module
+    """
+
     def test_truncation(self):
         """
         End to end test for truncation of long genomic regions
@@ -98,10 +109,39 @@ class TestMain(unittest.TestCase):
         with open(LOCAL_DATA + "/spacers_Salmonella.fa", "r") as file_handle:
             spacers = list(SeqIO.parse(file_handle, "fasta"))
         res_query = [main.find_spacers(query[0], spacers)]
-        res_query = main.truncate_sequences(res_query)
+        res_query = truncate_sequences(res_query)
         with open(tmp_file, 'w') as file_handle:
             main.write_fasta(res_query, file_handle)
         try:
             self.assertTrue(filecmp.cmp(expected_file, tmp_file))
         finally:
             os.remove(tmp_file)
+
+class TestExtractNew(unittest.TestCase):
+    """
+    Tests for extract_new.py module
+    """
+
+    def setUp(self):
+        """
+        Set up manual sequences for extraction
+        """
+        self.seqs = []
+        self.seqs.append(SeqRecord(Seq("aaat-DR&-SPAC&-DR&ccggg"), id="no_new", name="query1"))
+        self.seqs.append(SeqRecord(Seq("aaat-DR&actgatag-DR&gtcccggg"), id="new", name="query2"))
+
+    def test_extract_new_spacers(self):
+        """
+        Test main method of extract_new module
+        """
+        new_seqs = extract_new_spacers(self.seqs)
+        self.assertEqual(str(new_seqs[0].seq), "actgatag")
+
+    def test__extract_sequences(self):
+        """
+        Test for _extract_sequences method
+        """
+        new_seq1 = _extract_sequences(self.seqs[0])
+        self.assertFalse(new_seq1)
+        new_seq2 = _extract_sequences(self.seqs[1])
+        self.assertEqual(str(new_seq2[0].seq), "actgatag")
