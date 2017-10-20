@@ -11,12 +11,22 @@ This tool is a reimplemntation of a former tool in Perl/CGI developed by G. Guig
 
 #### Requirements
 
-This tool uses [Biopython](http://biopython.org/) library.
+This tool is developed in Python3 and uses [Biopython](http://biopython.org/) library.
 
-To install, run the following command:
+We recommand the use of a virtual environment to install and run the tool.
+
+To install, run the following commands:
 
 ```bash
+python3 -m venv crispr_typing
+source crispr_typing/bin/activate
 pip install git+https://gitlab.pasteur.fr/kehillio/salmonella-CRISPR.git 
+```
+
+To check if the installation was successful, try to display the help menu:
+
+```bash
+crispr_typing -h
 ```
 
 ## How does it work ?
