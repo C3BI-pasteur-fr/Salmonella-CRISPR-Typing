@@ -44,6 +44,23 @@ Please, read the help message for advanced features on the tool.
 crispr_typing --help
 ```
 
+## Example
+
+In the example folder, you have example files from the following command:
+
+```bash
+crispr_typing query.fasta -o seq.output -c -l -e
+```
+
+#### Output files
+
+Name | content |
+---- | ------- |
+seq.output | sequence with spacer sequences replaced by their names |
+seq.bed | BED file of all the spacers found |
+new_spacers.fa | sequence of new spacers found |
+
+
 ## References
 
 Fabre L, Zhang J, Guigon G, Le Hello S, Guibert V, Accou-Demartin M, de Romans S, Lim C, Roux C, Passet V, Diancourt L, Guibourdenche M, Issenhuth-Jeanjean S, Achtman M, Brisse S, Sola C, Weill FX. CRISPR typing and subtyping for improved laboratory surveillance of Salmonella infections. PLoS One. 2012;7(5):e36995. DOI:[10.1371/journal.pone.0036995](http://doi.org/10.1371/journal.pone.0036995)

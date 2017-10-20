@@ -59,10 +59,10 @@ def parse_arguments(args):
                         action='store_true')
     parser.add_argument('--one_line_fasta', help='write output FASTA in one line',
                         action='store_true')
-    parser.add_argument('--clean_sequences', help='remove ' + END_CHAR + ' from sequences',
+    parser.add_argument('-c', '--clean_sequences', help='remove ' + END_CHAR + ' from sequences',
                         action='store_true')
-    parser.add_argument('--list_spacers', help='list all spacers found', action='store_true')
-    parser.add_argument('--extract_new_spacers', help='extract new found spacer sequences',
+    parser.add_argument('-l', '--list_spacers', help='list all spacers found', action='store_true')
+    parser.add_argument('-e', '--extract_new_spacers', help='extract new found spacer sequences',
                         action='store_true')
     parser.add_argument('-v', '--verbose', help='verbose mode', action='store_true')
     parser.add_argument('--debug', help='write debug messages', action='store_true')
