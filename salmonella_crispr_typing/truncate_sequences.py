@@ -56,7 +56,7 @@ def _remove_end(seq, pos):
     _LOGGER.debug("Removing nucleotides at the end of the sequence.")
     cut_pos = pos + NUC_LEFT
     length_removed = len(seq) - (cut_pos + 1)
-    replacement_text = "...[{0}bp]".format(length_removed)
+    replacement_text = "..[{0}bp]".format(length_removed)
     return seq[:-length_removed] + replacement_text
 
 
