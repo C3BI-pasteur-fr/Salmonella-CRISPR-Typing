@@ -1,7 +1,7 @@
- <tool id="crispr_typing" name="Salmonella CRISPR Typing" version="1.0.0">
+ <tool id="crispr typing" name="Salmonella CRISPR Typing" version="1.0.0">
   <description>identify known spacers and DRs for Salmonella.</description>
   <requirements>
-    <requirement type="package" version="1.0.0">crispr</requirement>
+    <requirement type="package" version="1.0.0">salmonella-crispr-typing</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
@@ -70,7 +70,26 @@
   <tests>
     <!-- Test for basic and all files returned -->
     <test>
-
+      <param name="query_seq" value="uniq_query.fa" />
+      <param name="advanced" value="advanced" />
+      <param name="list_spacers" value="true" />
+      <output name="results" value="uniq_query.output" />
+      <output name="found_spacers" value="uniq_query.bed" />
+    </test>
+    <!-- Test for truncation of long sequence -->
+    <test>
+      <param name="query_seq" value="long_query.fa" />
+      <param name="advanced" value="advanced" />
+      <param name="truncate" value="true" />
+      <output name="results" value="long_query.output" />
+    </test>
+    <!-- Test for discovery of a new spacer -->
+    <test>
+      <param name="query_seq" value="new_query.fa" />
+      <param name="advanced" value="advanced" />
+      <param name="extract_new_spacers" value="true" />
+      <output name="results" value="new_query.output" />
+      <output name="extract_spacers" value="new_spacers.fa" />
     </test>
   </tests>
   <help><![CDATA[
