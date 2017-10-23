@@ -1,0 +1,108 @@
+ <tool id="crispr_typing" name="Salmonella CRISPR Typing" version="1.0.0">
+  <description>identify known spacers and DRs for Salmonella.</description>
+  <requirements>
+    <requirement type="package" version="1.0.0">crispr</requirement>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" />
+  </stdio>
+  <edam_topics>
+    <edam_topic>topic_0080</edam_topic>
+    <edam_topic>topic_3301</edam_topic>
+  </edam_topics>
+  <edam_operations>
+    <edam_operation>operation_2478</edam_operation>
+    <edam_operation>operation_0239</edam_operation>
+  </edam_operations>
+  <command><![CDATA[
+    crispr_typing
+      $query_seq
+      -o salmonella-crispr.output
+      ## Always remove END_CHAR from sequences
+      --clean_sequences
+      #if $use_perso_spacers.use_perso_spacers
+        -s $use_perso_spacers.spacers
+      #else
+        -s /home/khillion/Hub_projects/8318_Salmonella_CRISPR/salmonella-CRISPR/salmonella_crispr_typing/data/spacers_Salmonella.fa
+      #end if
+      #if $settings.advanced == "advanced"
+        $settings.truncate
+        $settings.one_line_fasta
+        $settings.list_spacers
+        $settings.extract_new_spacers
+      #end if
+  ]]></command>
+  <inputs>
+    <!-- Query sequence(s) -->
+    <param type="data" name="query_seq" format="fasta" label="Query sequence(s)" help="It can be a full assembly or a PCR product."/>
+    <conditional name="use_perso_spacers">
+      <param name="use_perso_spacers" type="boolean" checked="false" label="Would you like to use a personnal spacers database?" help="By default, it uses the bank from the latest release of the tool."/>
+      <when value="false">
+      </when>
+      <when value="true">
+        <param argument="--spacers" type="data" format="fasta" label="Select your own spacers database from history"/>
+      </when>
+    </conditional>
+    <!-- Advanced parameters -->
+    <conditional name="settings" >
+      <param name="advanced" type="select" label="Advanced parameters">
+          <option value="simple" selected="true">Hide</option>
+          <option value="advanced">Show</option>
+      </param>    
+      <when value="simple" />
+      <when value="advanced">
+          <param argument="--truncate" type="boolean" checked="false" truevalue="--truncate" falsevalue="" label="Truncate output sequences" help="This option is recommended when typing full assembly."/>
+          <param argument="--one_line_fasta" type="boolean" checked="false" truevalue="--one_line_fasta" falsevalue="" label="Write ouput sequences in FASTA in one line." />
+          <param argument="--list_spacers" type="boolean" checked="false" truevalue="--list_spacers" falsevalue="" label="List all found spacers in additional file." />
+          <param argument="--extract_new_spacers" type="boolean" checked="false" truevalue="--extract_new_spacers" falsevalue="" label="Extract new spacers." help="If no new spacers is found, resulting output file will be empty."/>
+      </when>
+    </conditional>
+  </inputs>>
+  <outputs>
+    <data format="txt" name="results" from_work_dir="salmonella-crispr.output" label="Results from [$tool.name] on $[on_string]"/>
+    <data format="bed" name="found_spacers" from_work_dir="salmonella-crispr.bed" label="All spacers found with [$tool.name] on $[on_string]">
+      <filter>settings['advanced'] == 'advanced' and settings['list_spacers']</filter>
+    </data>
+    <data format="fasta" name="extract_spacers" from_work_dir="new_spacers.fa" label="New spacers found with [$tool.name] on $[on_string]">
+      <filter>settings['advanced'] == 'advanced' and settings['extract_new_spacers']</filter>
+    </data>
+  </outputs>
+  <tests>
+    <!-- Test for basic and all files returned -->
+    <test>
+
+    </test>
+  </tests>
+  <help><![CDATA[
+
+How does it work ?
+==================
+
+CRISPR polymorphism is a powerful tool to subtype Salmonella strains and is now used in routine for epidemiological investigations.
+This tool gets a CRISPR profile by identifying the presence of known spacers and direct repeats (DRs) in a given sequence based on a catalogue.
+
+This tool is a reimplemntation of a former tool in Perl/CGI developed by G. Guigon
+
+Team_
+GitLab_
+
+.. _Team: https://research.pasteur.fr/en/nrc/escherichia-coli-shigella-salmonella/
+.. _GitLab: https://gitlab.pasteur.fr/kehillio/salmonella-CRISPR
+
+Help Page
+==========
+
+::
+
+  -s SPACERS, --spacers SPACERS   database of spacers (FASTA).
+  -o OUTFILE, --outfile OUTFILE   name of output file
+  -t, --truncate                  truncate sequences with no spacers
+  --one_line_fasta                write output FASTA in one line
+  -l, --list_spacers              list all spacers found
+  -e, --extract_new_spacers       extract new found spacer sequences
+
+  ]]></help>
+  <citations>
+    <citation type="doi">10.1371/annotation/e79cea9a-6716-4519-9e96-31b17bf6a4fb</citation>
+  </citations>
+</tool>

@@ -174,6 +174,8 @@ def run():
         if new_seqs:
             with open(NEW_SPAC, "w") as handle:
                 write_fasta(new_seqs, file_handle=handle, wrap=0)
+        else:
+            _LOGGER.warn("No new spacer has been found. " + NEW_SPAC + " will not be created.")
     # Clean up sequences to remove extra characters (END_CHAR) added
     if args.clean_sequences:
         res_query = clean_sequences(res_query)
