@@ -1,6 +1,6 @@
 language: python
 python:
-- '3.5.2'
+- 3.5.2
 - '3.6'
 install:
 - pip install .
@@ -9,7 +9,7 @@ deploy:
   provider: pypi
   user: khillion
   password:
-    secure: wXjAUwTd1KljIsnMo3sqOhX3pFuaHE6EbN0mN69cr6iK33XantV1Sgq0onylak6NYpOCih4ivpos5lzM/onhHpH/T4MIoACwUzXWaQctKmkozS4JU6m3d729mxHBbxpzp2H50V56cO7Bm+ydsbx9lgzcygiAo7rG316SezbEEOTw4FZHDOJ0P5MPhTLj2NMNS77iBSViuLxwjxBH32eXIz874fJ9HUpf1uoPW8XDsAGcn9GsZ6D7nSRS3IUD9S10Gu5t9+38+69Ee5WwbUx4Zz05Xv2mzDvAquY4zUXbSuDGxpFFMeiO2Z1NA4l+52ZXFgGWTboB+emxJF+6FYQ/yMoJ6qv6tVA5xA5rWDx260Eyyhg/hjGjkBryZ92/D7EHdUlSkiXZb3odvtkb4C5dB/wV+SU4vBorZuLn1AVx9errPuNym407lf0pdnl8KSXzkvhzG1DFX6qWemC255gwCylxmZdE/MT1E2NdWpwlIFGxvQu5gfbBa8CVI0/NWG0RN0oKbrRSxHxk5B5k2Oxv58Dxr3kvA/9KcqyMwuurAXKWwVVGYevHCoxZDefakwH1CLOSlfJFTGyFbal/ZvsL4qhJmTsEDbm1pcGOAxgcFTyJ+hZB3rzhJb6siF5YQ4gtMh553/Ice4CsXYRodIqpIaS5Ri8zjV34ncdAJJHKjoI=
+    secure: EgZ17iFM6JjDePsvBk+p4OidU7RYKDD0+UynRJ2uz3dQuFNJZGscOAm5/BF5xmLud5kNn8lUNIyAIs5oI+zeS05Ycuu+Izl+loQy9oPhGe7o1FRWkE3A3sz2UcHsm0wxgBqYw0eX3b+u3jKZ4fKNASbjLdTFNphHoFV/pC/nEvRKkBh0tdE6/8eKc0GIxlCBkWHPAbg6gnPXczV6+1ATjTBObVjAbAjwvSwE6m3WDKXwg5hYx08TOF2smmh/6xljvtBeKHQGtvY9QfNCj50/GPJc2Hlms1hrPYbD+XA4lJeCvqI/x4kQNVVgNHnUW8og7L2OaCCLBPxB8ZW6QK9sYP37WizANEvEd1h8o3aFuswMrP9mN6acpaiMbYosDam1QP6JMNa7CAmR7qIm5d7bEEys7xK5kRrXKXLO1uiKlYIRXsVq5VmIFlWB1w+TeSf42vSebkSOfjuoUdYHbOGOy0uagsQFLaj0YkMTFdABq98VCJGwAceh4mitPD3DBFbt0scpSHTpQvSoYgQxMX8pn5ja3VMk0oR/fa4JnXo4C+iEkX8251jyE0BbL+va70Ozz/kOm3ygIhd7Y5eRGtVFO2RZUMbHhsisqKwU/I57pL6ndaDFjceeUcjZ75u3ztBGN4M+uaXCtf/bCVMN5eceYWr6GKaSkhkCnNW/+7tY/KE=
   on:
     tags: true
     distributions: sdist bdist_wheel
