@@ -22,7 +22,7 @@ To install, run the following commands:
 ```bash
 python3 -m venv crispr_typing
 source crispr_typing/bin/activate
-pip install git+https://gitlab.pasteur.fr/kehillio/salmonella-CRISPR.git 
+pip install git+https://github.com/C3BI-pasteur-fr/Salmonella-CRISPR-Typing.git
 ```
 
 To check if the installation was successful, try to display the help menu:
