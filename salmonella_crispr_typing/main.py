@@ -19,6 +19,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.SeqIO.FastaIO import FastaWriter
 
+from salmonella_crispr_typing import __version__
 from salmonella_crispr_typing.truncate_sequences import truncate_sequences
 from salmonella_crispr_typing.extract_new import extract_new_spacers
 from salmonella_crispr_typing.settings import START_CHAR, END_CHAR, LOCAL_DATA, FOUND_SPAC, NEW_SPAC
@@ -66,6 +67,8 @@ def parse_arguments(args):
                         action='store_true')
     parser.add_argument('-v', '--verbose', help='verbose mode', action='store_true')
     parser.add_argument('--debug', help='write debug messages', action='store_true')
+    parser.add_argument('--version', action='version', version=__version__,
+                        help='show the version number and exit.')
 
 
     try:

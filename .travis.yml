@@ -13,4 +13,4 @@ deploy:
   on:
     tags: true
     distributions: sdist bdist_wheel
-repo: C3BI-pasteur-fr/Salmonella-CRISPR-Typing
+    repo: C3BI-pasteur-fr/Salmonella-CRISPR-Typing
