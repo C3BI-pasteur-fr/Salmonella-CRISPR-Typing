@@ -17,7 +17,7 @@ setup(name="salmonella_crispr_typing",
         },
         entry_points={'console_scripts':['crispr_typing=salmonella_crispr_typing.main:run']},
         classifiers=[
-            'Development Status :: 4 - Beta',
+            'Development Status :: 5 - Production/Stable',
             'Topic :: Scientific/Engineering :: Bio-Informatics',
             'Operating System :: OS Independent',
             'Intended Audience :: Developers',
