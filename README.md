@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/C3BI-pasteur-fr/Salmonella-CRISPR-Typing.svg?branch=master)](https://travis-ci.org/C3BI-pasteur-fr/Salmonella-CRISPR-Typing)
 [![PyPI version](https://badge.fury.io/py/salmonella_crispr_typing.svg)](https://badge.fury.io/py/salmonella_crispr_typing)
+[![bio.tools entry](https://img.shields.io/badge/bio.tools-Salmonella__CRISPR__typing-orange.svg)](https://bio.tools/Salmonella_CRISPR_typing)
 
 CRISPR polymorphism is a powerful tool to subtype Salmonella strains and is now used in routine for epidemiological investigations.
 This tool gets a CRISPR profile by identifying the presence of known spacers and direct repeats (DRs) in a given sequence based on a catalogue.
