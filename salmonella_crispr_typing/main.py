@@ -168,9 +168,6 @@ def run():
     res_query = []
     for query in query_seqs:
         res_query.append(find_spacers(query, spacers))
-    # User specified to truncate sequences with no spacers
-    if args.truncate:
-        res_query = truncate_sequences(res_query)
     # User specified to extract sequences from new found spacers
     if args.extract_new_spacers:
         new_seqs = extract_new_spacers(res_query)
@@ -179,6 +176,9 @@ def run():
                 write_fasta(new_seqs, file_handle=handle, wrap=0)
         else:
             _LOGGER.warn("No new spacer has been found. " + NEW_SPAC + " will not be created.")
+    # User specified to truncate sequences with no spacers
+    if args.truncate:
+        res_query = truncate_sequences(res_query)
     # Clean up sequences to remove extra characters (END_CHAR) added
     if args.clean_sequences:
         res_query = clean_sequences(res_query)
