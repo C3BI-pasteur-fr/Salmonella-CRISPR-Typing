@@ -154,7 +154,13 @@ def run():
     logging.basicConfig(level=logger_level(args))
 
     # Parse query sequence(s)
-    query_seqs = list(SeqIO.parse(args.query, "fasta"))
+    query_seqs = []
+    for query in list(SeqIO.parse(args.query, "fasta")):
+        query_seqs.append(query)
+        rev_query = query.reverse_complement()
+        for attrib in ['id', 'name', 'description']:
+            setattr(rev_query, attrib, getattr(query, attrib) + "_rev")
+        query_seqs.append(rev_query)
     # Parse content of spacers database
     spacers = list(SeqIO.parse(args.spacers, "fasta"))
     # First make found spacers list if asked
