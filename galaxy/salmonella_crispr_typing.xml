@@ -1,7 +1,7 @@
- <tool id="salmonella_crispr_typing" name="Salmonella CRISPR Typing" version="1.0.0">
+ <tool id="salmonella_crispr_typing" name="Salmonella CRISPR Typing" version="1.0.1">
   <description>identify known spacers and DRs for Salmonella.</description>
   <requirements>
-    <requirement type="package" version="1.0.0">Salmonella-CRISPR-Typing</requirement>
+    <requirement type="package" version="1.0.1">Salmonella-CRISPR-Typing</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
